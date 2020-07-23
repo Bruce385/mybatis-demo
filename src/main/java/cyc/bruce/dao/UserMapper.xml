@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cyc.bruce.dao.UserMapper">
+    <select id="getUserList" resultType="User">
+        select * from user
+    </select>
+
+    <select id="getUserById" resultType="User">
+        select * from user where userid=#{id}
+    </select>
+
+    <insert id="addUser" parameterType="User">
+        insert into user (username, sex, age) value (#{username},#{sex},#{age})
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update user set username=#{username},sex=#{sex},age=#{age} where userid=#{userid}
+    </update>
+
+    <delete id="deleteUser">
+        delete from user where userid=#{id}
+    </delete>
+</mapper>

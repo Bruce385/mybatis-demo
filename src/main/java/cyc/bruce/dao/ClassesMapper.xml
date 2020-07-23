@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cyc.bruce.dao.ClassesMapper">
+
+    <!-- 使用resultMap映射实体类和字段之间的一一对应关系 -->
+    <resultMap type="Classes" id="ClassResultMap">
+        <id property="id" column="c_id"/>
+        <result property="name" column="c_name"/>
+        <association property="teacher" javaType="Teacher">
+            <id property="id" column="t_id"/>
+            <result property="name" column="t_name"/>
+        </association>
+        <collection property="students" ofType="Student">
+            <id property="id" column="s_id"/>
+            <result property="name" column="s_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="getClassList" resultMap="ClassResultMap">
+        select * from class c left join teacher t on c.teacher_id = t.t_id
+        left join student s on c.c_id=s.class_id
+    </select>
+
+    <select id="getClassById" parameterType="int" resultMap="ClassResultMap">
+        select * from class c, teacher t, student s
+        where c.teacher_id=t.t_id and c.c_id=s.class_id and c.c_id=#{id}
+    </select>
+
+    <insert id="addClass">
+        insert into class (c_id, c_name, teacher_id) value (#{id},#{name},#{teacher.id})
+    </insert>
+
+    <update id="updateClass">
+        update class set c_name=#{name},teacher_id=#{teacher.id} where c_id=#{id}
+    </update>
+</mapper>
